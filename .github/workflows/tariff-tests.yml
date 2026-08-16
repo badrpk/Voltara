@@ -1,0 +1,32 @@
+name: Voltara tariff tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/voltara/tariff.js'
+      - 'test/tariff.test.js'
+      - '.github/workflows/tariff-tests.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/voltara/tariff.js'
+      - 'test/tariff.test.js'
+      - '.github/workflows/tariff-tests.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: node --test test/tariff.test.js
